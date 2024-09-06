@@ -37,7 +37,7 @@ namespace AspNetCoreIdentityDemo.Controllers
                     Email = model.Email
                 };
 
-                var result = await _userManager.CreateAsync(user);
+                var result = await _userManager.CreateAsync(user, model.Password);
 
                 if(result.Succeeded)
                 {
