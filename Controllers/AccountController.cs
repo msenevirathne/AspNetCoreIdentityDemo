@@ -67,13 +67,7 @@ namespace AspNetCoreIdentityDemo.Controllers
         {
             if(ModelState.IsValid)
             {
-                var user = new IdentityUser
-                {
-                    UserName = model.Email,
-                    Email = model.Email
-                };
-
-                var result = await _signInManager.PasswordSignInAsync(user, model.Password, model.RememberMe, lockoutOnFailure: false);
+                var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, lockoutOnFailure: false);
 
                 if(result.Succeeded)
                 {
