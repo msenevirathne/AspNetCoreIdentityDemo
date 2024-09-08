@@ -1,4 +1,5 @@
-﻿using AspNetCoreIdentityDemo.ViewModels;
+﻿using AspNetCoreIdentityDemo.Models;
+using AspNetCoreIdentityDemo.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -7,11 +8,11 @@ namespace AspNetCoreIdentityDemo.Controllers
 {
     public class AccountController : Controller
     {
-        private readonly UserManager<IdentityUser> _userManager;
-        private readonly SignInManager<IdentityUser> _signInManager;
+        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly RoleManager<IdentityRole> _roleManager;
 
-        public AccountController(UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager,
+        public AccountController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager,
             RoleManager<IdentityRole> roleManager)
         {
             _userManager = userManager;
@@ -31,10 +32,12 @@ namespace AspNetCoreIdentityDemo.Controllers
         {
             if(ModelState.IsValid)
             {
-                var user = new IdentityUser
+                var user = new ApplicationUser
                 {
                     UserName = model.Email,
-                    Email = model.Email
+                    Email = model.Email,
+                    FirstName = model.FirstName,
+                    LastName = model.LastName
                 };
 
                 var result = await _userManager.CreateAsync(user, model.Password);
