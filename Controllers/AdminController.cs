@@ -1,6 +1,7 @@
 ﻿using AspNetCoreIdentityDemo.ViewModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace AspNetCoreIdentityDemo.Controllers
 {
@@ -58,5 +59,10 @@ namespace AspNetCoreIdentityDemo.Controllers
             return View(model);
         }
 
+        public async Task<IActionResult> ListRoles()
+        {
+            List<IdentityRole> roles = await _roleManager.Roles.ToListAsync();
+            return View(roles);
+        }
     }
 }
