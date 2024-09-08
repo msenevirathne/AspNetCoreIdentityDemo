@@ -72,7 +72,7 @@ namespace AspNetCoreIdentityDemo.Controllers
 
                 if(result.Succeeded)
                 {
-                    if (!string.IsNullOrEmpty(ReturnUrl) && Url.IsLocalUrl(ReturnUrl))
+                    if(!string.IsNullOrEmpty(ReturnUrl) && Url.IsLocalUrl(ReturnUrl))
                     {
                         return Redirect(ReturnUrl);
                     }
@@ -93,6 +93,23 @@ namespace AspNetCoreIdentityDemo.Controllers
         {
             await _signInManager.SignOutAsync();
             return RedirectToAction(nameof(HomeController.Index), "Home");
+        }
+
+        [AllowAnonymous]
+        [HttpPost]
+        [HttpGet]
+        public async Task<IActionResult> IsEmailTaken(string email)
+        {
+            var user = await _userManager.FindByEmailAsync(email);
+
+            if(user == null)
+            {
+                return Json(true);
+            }
+            else
+            {
+                return Json($"Email {email} is already taken.");
+            }
         }
     }
 }
