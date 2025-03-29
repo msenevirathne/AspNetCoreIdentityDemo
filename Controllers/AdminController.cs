@@ -82,5 +82,37 @@ namespace AspNetCoreIdentityDemo.Controllers
 
             return View(model);
         }
+
+        [HttpPost]
+        public async Task<IActionResult> EditRole(EditRoleViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var role = await _roleManager.FindByIdAsync(model.Id);
+                if (role == null)
+                {
+                    ViewBag.ErrorMessage = $"Role with Id {model.Id} cannot be found";
+                    return View("Error");
+                }
+                else
+                {
+                    role.Name = model.RoleName;
+                    var result = await _roleManager.UpdateAsync(role);
+                    if (result.Succeeded)
+                    {
+                        return RedirectToAction("ListRoles");
+                    }
+
+                    foreach (var error in result.Errors)
+                    {
+                        ModelState.AddModelError("", error.Description);
+                    }
+
+                    return View(model);
+                }
+            }
+
+            return View(model);
+        }
     }
 }
