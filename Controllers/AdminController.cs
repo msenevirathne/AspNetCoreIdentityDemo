@@ -64,5 +64,23 @@ namespace AspNetCoreIdentityDemo.Controllers
             List<IdentityRole> roles = await _roleManager.Roles.ToListAsync();
             return View(roles);
         }
+
+        public async Task<IActionResult> EditRole(string roleId)
+        {
+            IdentityRole role = await _roleManager.FindByIdAsync(roleId);
+            if (role == null)
+            {
+                return View("Error");
+            }
+
+            var model = new EditRoleViewModel
+            {
+                Id = role.Id,
+                RoleName = role.Name
+
+            };
+
+            return View(model);
+        }
     }
 }
